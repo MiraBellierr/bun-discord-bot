@@ -1,6 +1,9 @@
+<img width="120" height="120" align="left" style="float: left; margin: 0 10px 0 0;" alt="kanna" src="https://cdn.discordapp.com/avatars/995295800722718740/d73803f4bec1c77fe5f1d7a605290a5d.jpg">
+
 # Bun Discord Bot
 
-An interaction Discord bot written in JS and TS using Bun runtime environment.
+An interaction Discord bot written in JS and TS using Bun runtime environment.<br>
+Contains simple get avatar and get user info commands.
 
 ## This bot is created with Bun runtime
 
