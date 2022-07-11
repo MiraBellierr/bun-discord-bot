@@ -1,79 +1,90 @@
-import { Server } from 'slash-create';
-import { MultipartData } from 'slash-create/lib/util/multipartData.js';
+import { Server } from "slash-create";
+import { MultipartData } from "slash-create/lib/util/multipartData.js";
 
 export default class BunServer extends Server {
-  #server = null;
-  #handler = null;
-  isWebserver = true;
+	#server = null;
+	#handler = null;
+	isWebserver = true;
 
-  constructor() {
-    super({ alreadyListening: true });
-  }
+	constructor() {
+		super({ alreadyListening: true });
+	}
 
-  createEndpoint(path, handler) {
-    this.#handler = handler;
-  }
+	createEndpoint(path, handler) {
+		this.#handler = handler;
+	}
 
-  stop() {
-    if (this.#server) this.#server.close();
-    else throw new Error('BunServer not started');
-  }
+	stop() {
+		if (this.#server) this.#server.close();
+		else throw new Error("BunServer not started");
+	}
 
-  listen(port, options = {}) {
-    const getHandler = () => this.#handler;
+	listen(port, options = {}) {
+		const getHandler = () => this.#handler;
 
-    this.#server = Bun.serve({
-      port,
-      ...options,
+		this.#server = Bun.serve({
+			port,
+			...options,
 
-      async fetch(req) {
-        const handler = getHandler();
-        if (!handler) return new Response('Server has no handler.', { status: 503 });
-        if (req.method !== 'POST') return new Response('Server only supports POST requests.', { status: 405 });
+			async fetch(req) {
+				const handler = getHandler();
+				if (!handler)
+					return new Response("Server has no handler.", { status: 503 });
+				if (req.method !== "POST")
+					return new Response("Server only supports POST requests.", {
+						status: 405,
+					});
 
-        const reqHeaders = Object.fromEntries(req.headers.entries());
-        
-        const reqBody = await req.json();
+				const reqHeaders = Object.fromEntries(req.headers.entries());
 
-        return await new Promise(async (ok, err) => {
-          try {
-            await handler({
-              request: req,
-              body: reqBody,
-              response: null,
-              headers: reqHeaders,
-            }, response => {
-              let body = response.body;
-              const headers = new Headers();
+				const reqBody = await req.json();
 
-              if (response.headers) {
-                for (const key in response.headers) {
-                  headers.set(key, response.headers[key]);
-                }
-              }
+				return await new Promise(async (ok, err) => {
+					try {
+						await handler(
+							{
+								request: req,
+								body: reqBody,
+								response: null,
+								headers: reqHeaders,
+							},
+							(response) => {
+								let body = response.body;
+								const headers = new Headers();
 
-              if ('string' !== typeof body) {
-                body = JSON.stringify(body);
-                headers.set('content-type', 'application/json');
-              }
+								if (response.headers) {
+									for (const key in response.headers) {
+										headers.set(key, response.headers[key]);
+									}
+								}
 
-              if (response.files) {
-                const form = new MultipartData();
-                headers.set('content-type', `multipart/form-data; boundary=${form.boundary}`);
+								if ("string" !== typeof body) {
+									body = JSON.stringify(body);
+									headers.set("content-type", "application/json");
+								}
 
-                form.attach('payload_json', body);
-                for (const file of response.files) form.attach(file.name, file.file, file.name);
+								if (response.files) {
+									const form = new MultipartData();
+									headers.set(
+										"content-type",
+										`multipart/form-data; boundary=${form.boundary}`
+									);
 
-                body = Buffer.concat(form.finish());
-              }
+									form.attach("payload_json", body);
+									for (const file of response.files)
+										form.attach(file.name, file.file, file.name);
 
-              ok(new Response(body, { headers, status: response.status }));
-            });
-          } catch (error) {
-            err(error);
-          }
-        });
-      },
-    });
-  }
-};
+									body = Buffer.concat(form.finish());
+								}
+
+								ok(new Response(body, { headers, status: response.status }));
+							}
+						);
+					} catch (error) {
+						err(error);
+					}
+				});
+			},
+		});
+	}
+}
