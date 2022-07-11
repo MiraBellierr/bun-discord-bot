@@ -54,9 +54,7 @@ export default class UserCommand extends SlashCommand {
 				target?.user.bot ? "Bot" : "User"
 			}\n**• Avatar URL:** [click here](${
 				target?.avatarURL
-			})\n**• Joined At:** ${joinedAt} (<t:${Math.round(
-				target?.joinedAt ?? Date.now() / 1000
-			)}:R>)`,
+			})\n**• Joined At:** ${joinedAt}`,
 			color: 0xcd1c6c,
 			image: {
 				url: target?.dynamicAvatarURL(undefined, 4096),
