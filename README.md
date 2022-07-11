@@ -2,7 +2,7 @@
 
 # Bun Discord Bot
 
-An interaction Discord bot written in JS and TS using Bun runtime environment. Contains simple get avatar and get user info commands. Starting a bot only takes 0.02 - 0.05 ms.
+An interaction Discord bot written in JS and TS using Bun runtime environment. Contains simple get avatar and get user info commands. Starting up the bot only takes `0.02-0.05 ms`.
 
 ## This bot is created with Bun runtime
 
