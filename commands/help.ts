@@ -17,6 +17,6 @@ export default class HelpCommand extends SlashCommand {
 	}
 
 	async run() {
-		return "list of commands:\n\n`8ball`, `catsay`, `hack`, `hello`, `modal`, `help`\n\nThere are also some commands on the User UI:\n\n`get avatar url`, `get user info`";
+		return "list of commands:\n\n`8ball`, `catsay`, `hack`, `hello`, `modal`, `help`\n\nThere are also some commands on the User UI:\n\n`get avatar url`, `get user info`, `joined at`";
 	}
 }
