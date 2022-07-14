@@ -3,6 +3,7 @@ import {
 	CommandOptionType,
 	CommandContext,
 	SlashCreator,
+	ApplicationCommandType,
 } from "slash-create";
 
 export default class HelpCommand extends SlashCommand {
@@ -17,6 +18,29 @@ export default class HelpCommand extends SlashCommand {
 	}
 
 	async run() {
-		return "list of commands:\n\n`8ball`, `catsay`, `hack`, `hello`, `modal`, `help`\n\nThere are also some commands on the User UI:\n\n`get avatar url`, `get user info`, `joined at`";
+		const userCommands: string[] = [];
+		const chatInputCommands: string[] = [];
+
+		(await this.creator.api.getCommands())
+			.filter((command) => command.type === ApplicationCommandType.USER)
+			.forEach((command) => {
+				userCommands.push(
+					`\`${command.name}\` - ${command.description || "No description"}`
+				);
+			});
+
+		(await this.creator.api.getCommands())
+			.filter((command) => command.type === ApplicationCommandType.CHAT_INPUT)
+			.forEach((command) => {
+				chatInputCommands.push(
+					`\`${command.name}\` - ${command.description || "No description"}`
+				);
+			});
+
+		return `list of commands:\n\n${chatInputCommands.join(
+			"\n"
+		)}\n\nThere are also some commands on the User UI:\n\n${userCommands.join(
+			"\n"
+		)}\n\n Invite bot here: <https://discord.com/oauth2/authorize?client_id=995295800722718740&scope=applications.commands>`;
 	}
 }
