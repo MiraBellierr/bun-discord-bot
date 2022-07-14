@@ -25,7 +25,7 @@ export default class HelpCommand extends SlashCommand {
 			.filter((command) => command.type === ApplicationCommandType.USER)
 			.forEach((command) => {
 				userCommands.push(
-					`\`${command.name}\` - ${command.description || "No description"}`
+					` > \`${command.name}\` - ${command.description || "No description"}`
 				);
 			});
 
@@ -33,14 +33,14 @@ export default class HelpCommand extends SlashCommand {
 			.filter((command) => command.type === ApplicationCommandType.CHAT_INPUT)
 			.forEach((command) => {
 				chatInputCommands.push(
-					`\`${command.name}\` - ${command.description || "No description"}`
+					`> \`${command.name}\` - ${command.description || "No description"}`
 				);
 			});
 
 		return `list of commands:\n\n${chatInputCommands.join(
 			"\n"
-		)}\n\nThere are also some commands on the User UI:\n\n${userCommands.join(
+		)}\n\nThere are also some commands on the User UI:\n${userCommands.join(
 			"\n"
-		)}\n\n Invite bot here: <https://discord.com/oauth2/authorize?client_id=995295800722718740&scope=applications.commands>`;
+		)}\n\nInvite bot here\n> <https://discord.com/oauth2/authorize?client_id=995295800722718740&scope=applications.commands>`;
 	}
 }
