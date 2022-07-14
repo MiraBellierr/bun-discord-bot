@@ -1,7 +1,7 @@
 {
-  "version": "0.0.5",
   "name": "bun-discord-bot",
+  "version": "0.0.5",
   "dependencies": {
-    "slash-create": "^5.7.0"
+    "slash-create": "^5.7.1"
   }
 }
