@@ -20,6 +20,15 @@ export default class HelpCommand extends SlashCommand {
 	async run() {
 		const userCommands: string[] = [];
 		const chatInputCommands: string[] = [];
+		const messageCommands: string[] = [];
+
+		(await this.creator.api.getCommands())
+			.filter((command) => command.type === ApplicationCommandType.MESSAGE)
+			.forEach((command) => {
+				messageCommands.push(
+					` > \`${command.name}\` - ${command.description || "No description"}`
+				);
+			});
 
 		(await this.creator.api.getCommands())
 			.filter((command) => command.type === ApplicationCommandType.USER)
@@ -39,7 +48,9 @@ export default class HelpCommand extends SlashCommand {
 
 		return `list of commands:\n\n${chatInputCommands.join(
 			"\n"
-		)}\n\nThere are also some commands on the User UI:\n${userCommands.join(
+		)}\n\nThere are also some commands on the user UI:\n${userCommands.join(
+			"\n"
+		)}\n\nAnd some commands on the message UI:\n${messageCommands.join(
 			"\n"
 		)}\n\nInvite bot here\n> <https://discord.com/oauth2/authorize?client_id=995295800722718740&scope=applications.commands>`;
 	}
