@@ -5,8 +5,8 @@ import {
 	SlashCreator,
 	User,
 } from "slash-create";
-import { FetchRequestHandler } from "../bun_shim/rest";
-import { kill } from "../utils/kill";
+import { FetchRequestHandler } from "../../bun_shim/rest";
+import { kill } from "../../utils/kill";
 
 export default class HackCommand extends SlashCommand {
 	constructor(creator: SlashCreator) {

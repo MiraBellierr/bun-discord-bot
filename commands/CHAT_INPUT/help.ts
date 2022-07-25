@@ -10,7 +10,7 @@ export default class HelpCommand extends SlashCommand {
 	constructor(creator: SlashCreator) {
 		super(creator, {
 			name: "help",
-			description: "List of commands.",
+			description: "List of commands",
 		});
 
 		// @ts-ignore
